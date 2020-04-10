@@ -1,52 +1,4 @@
--- create database bookapi
-DROP SCHEMA IF EXISTS `bookapi`;
-CREATE SCHEMA `bookapi`;
-
--- select the database
-USE `bookapi` ;
-
-CREATE TABLE IF NOT EXISTS `bookapi`.`tbl_university` (
-  `id` BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `title` VARCHAR(255) DEFAULT NULL,
-  `short_title` VARCHAR(255) DEFAULT NULL
-);
-
-CREATE TABLE IF NOT EXISTS `bookapi`.`tbl_faculty` (
-  `id` BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `title` VARCHAR(255) DEFAULT NULL,
-  `short_title` VARCHAR(255) DEFAULT NULL,
-  `university_id` BIGINT(20) NOT NULL,
-  FOREIGN KEY (`university_id`) REFERENCES `tbl_university` (`id`)
-);
-
-CREATE TABLE IF NOT EXISTS `bookapi`.`tbl_department` (
-  `id` BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `title` VARCHAR(255) DEFAULT NULL,
-  `short_title` VARCHAR(255) DEFAULT NULL,
-  `faculty_id` BIGINT(20) NOT NULL,
-  FOREIGN KEY (`faculty_id`) REFERENCES `tbl_faculty` (`id`)
-);
-
--- create category table tbl_category
-CREATE TABLE IF NOT EXISTS `bookapi`.`tbl_category` (
-  `id` BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `category_name` VARCHAR(255) NULL DEFAULT NULL);
-
--- create book table tbl_book
-CREATE TABLE IF NOT EXISTS `bookapi`.`tbl_book` (
-  `id` BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `name` VARCHAR(255) DEFAULT NULL,
-  `author` VARCHAR(255) DEFAULT NULL,
-  `image_url` VARCHAR(255) DEFAULT NULL,
-  `book_url` VARCHAR(255) DEFAULT NULL,
-   `date_created` DATETIME DEFAULT NULL,
-  `last_updated` DATETIME DEFAULT NULL,
-  `category_id` BIGINT(20) NOT NULL,
-  `department_id` BIGINT(20) NOT NULL,
-  FOREIGN KEY (`category_id`) REFERENCES `tbl_category` (`id`),
-  FOREIGN KEY (`department_id`) REFERENCES `tbl_department` (`id`)
-);
-
+use bookapi;
 
 INSERT INTO tbl_university
 (
@@ -130,6 +82,32 @@ VALUES
     NOW(),
     1
 );
+
+INSERT INTO tbl_role (id, name) VALUES (1, 'ROLE_ADMIN'), (2, 'ROLE_AUTHOR'), (3, 'ROLE_ADMIN');
+
+INSERT INTO tbl_user
+(
+	email,
+    first_name,
+    last_name,
+    password
+)
+VALUES
+(
+	'ivanivanov@bntu.by',
+    'Иван',
+    'Иванов',
+    '12345'
+),
+(
+	'admin@bntu.by',
+    'Админ',
+    'Админ',
+    '12345admin'
+);
+
+INSERT INTO tbl_user_roles (user_id, roles_id) VALUES (1, 2), (2, 3);
+
 
     
 	
