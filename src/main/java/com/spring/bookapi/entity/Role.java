@@ -1,20 +1,18 @@
 package com.spring.bookapi.entity;
 
-import org.springframework.security.core.GrantedAuthority;
-
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Table(name = "tbl_role")
-public class Role implements GrantedAuthority {
+public class Role {
 
     @Id
-    private Long id;
-    private String name;
-    @Transient
-    @ManyToMany(mappedBy = "roles")
-    private Set<User> users;
+    private Integer id;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private ERole name;
+
     public Role() {
     }
 
@@ -23,36 +21,22 @@ public class Role implements GrantedAuthority {
         return "Role{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", users=" + users +
                 '}';
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public String getName() {
+    public ERole getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(ERole name) {
         this.name = name;
-    }
-
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
-
-    @Override
-    public String getAuthority() {
-        return null;
     }
 }

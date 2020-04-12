@@ -88,27 +88,19 @@ INSERT INTO tbl_role (id, name) VALUES (1, 'ROLE_ADMIN'), (2, 'ROLE_AUTHOR'), (3
 INSERT INTO tbl_user
 (
 	email,
-    first_name,
-    last_name,
+    username,
     password
 )
 VALUES
 (
 	'ivanivanov@bntu.by',
-    'Иван',
-    'Иванов',
+    'Иванов И. И.',
     '12345'
 ),
 (
 	'admin@bntu.by',
     'Админ',
-    'Админ',
     '12345admin'
 );
 
 INSERT INTO tbl_user_roles (user_id, roles_id) VALUES (1, 2), (2, 3);
-
-
-    
-	
-
