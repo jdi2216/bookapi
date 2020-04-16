@@ -83,7 +83,7 @@ VALUES
     1
 );
 
-INSERT INTO tbl_role (id, name) VALUES (1, 'ROLE_ADMIN'), (2, 'ROLE_AUTHOR'), (3, 'ROLE_ADMIN');
+INSERT INTO tbl_role (id, name) VALUES (1, 'ROLE_USER'), (2, 'ROLE_AUTHOR'), (3, 'ROLE_ADMIN');
 
 INSERT INTO tbl_user
 (

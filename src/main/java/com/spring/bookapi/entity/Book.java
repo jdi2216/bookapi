@@ -12,6 +12,7 @@ public class Book {
 
     private String name;
     private String author;
+    private String description;
 
     @Column(name = "image_url")
     private String imageUrl;
@@ -55,6 +56,22 @@ public class Book {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 
     public String getImageUrl() {
@@ -103,11 +120,13 @@ public class Book {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", author='" + author + '\'' +
+                ", description='" + description + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", bookUrl='" + bookUrl + '\'' +
                 ", createdOn=" + createdOn +
                 ", updatedOn=" + updatedOn +
                 ", category=" + category +
+                ", department=" + department +
                 '}';
     }
 }
