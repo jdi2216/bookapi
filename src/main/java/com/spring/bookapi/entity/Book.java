@@ -2,6 +2,8 @@ package com.spring.bookapi.entity;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "tbl_book")
@@ -10,9 +12,24 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-    private String author;
+    private String ISBN;
+
+    private String title;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(	name = "tbl_book_authors",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns =
+                    @JoinColumn(name = "user_id"))
+    private Set<User> authors = new HashSet<>();
+
+    @Column(columnDefinition = "text")
     private String description;
+
+    @Column(columnDefinition = "text")
+    private String annotation;
+
+    private int year;
 
     @Column(name = "image_url")
     private String imageUrl;
@@ -42,20 +59,28 @@ public class Book {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getISBN() {
+        return ISBN;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setISBN(String ISBN) {
+        this.ISBN = ISBN;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getTitle() {
+        return title;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setTitle(String name) {
+        this.title = title;
+    }
+
+    public Set<User> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(Set<User> authors) {
+        this.authors = authors;
     }
 
     public String getDescription() {
@@ -64,6 +89,22 @@ public class Book {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getAnnotation() {
+        return annotation;
+    }
+
+    public void setAnnotation(String annotation) {
+        this.annotation = annotation;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
     }
 
     public Department getDepartment() {
@@ -114,19 +155,4 @@ public class Book {
         this.category = category;
     }
 
-    @Override
-    public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", author='" + author + '\'' +
-                ", description='" + description + '\'' +
-                ", imageUrl='" + imageUrl + '\'' +
-                ", bookUrl='" + bookUrl + '\'' +
-                ", createdOn=" + createdOn +
-                ", updatedOn=" + updatedOn +
-                ", category=" + category +
-                ", department=" + department +
-                '}';
-    }
 }

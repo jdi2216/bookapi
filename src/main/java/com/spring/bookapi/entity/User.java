@@ -24,6 +24,7 @@ public class User {
     private String password;
     @Transient
     private String passwordConfirm;
+    private String fullName;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(	name = "tbl_user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -74,6 +75,14 @@ public class User {
         this.passwordConfirm = passwordConfirm;
     }
 
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
     public Set<Role> getRoles() {
         return roles;
     }
@@ -94,6 +103,7 @@ public class User {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", passwordConfirm='" + passwordConfirm + '\'' +
+                ", fullName='" + fullName + '\'' +
                 ", roles=" + roles +
                 '}';
     }
