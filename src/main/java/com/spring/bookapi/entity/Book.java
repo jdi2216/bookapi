@@ -43,9 +43,12 @@ public class Book {
     @Column(name = "last_updated")
     private Date updatedOn;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
-    private BookCategory category;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(	name = "tbl_book_categories",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns =
+            @JoinColumn(name = "category_id"))
+    private Set<BookCategory> category = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "department_id", nullable = false)
@@ -147,11 +150,11 @@ public class Book {
         this.updatedOn = updatedOn;
     }
 
-    public BookCategory getCategory() {
+    public Set<BookCategory> getCategory() {
         return category;
     }
 
-    public void setCategory(BookCategory category) {
+    public void setCategory(Set<BookCategory> category) {
         this.category = category;
     }
 

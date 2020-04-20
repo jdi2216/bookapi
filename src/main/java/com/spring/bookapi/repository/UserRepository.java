@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.Optional;
 
-@CrossOrigin("http://localhost:8080")
 public interface UserRepository extends JpaRepository<User, Long> {
     @RestResource
     Optional<User> findByUsername(String username);
