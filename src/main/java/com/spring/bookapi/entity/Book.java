@@ -158,4 +158,21 @@ public class Book {
         this.category = category;
     }
 
+    public  Book() {
+
+    }
+
+    public Book(String ISBN, String title, String description, String annotation,
+                int year, String imageUrl, String bookUrl) {
+        this.ISBN = ISBN;
+        this.title = title;
+        //this.authors = authors;
+        this.description = description;
+        this.annotation = annotation;
+        this.year = year;
+        this.imageUrl = imageUrl;
+        this.bookUrl = bookUrl;
+        //this.category = category;
+        //this.department = department;
+    }
 }
