@@ -56,21 +56,6 @@ public class BookController {
         }
     }
 
-    /*
-    @PostMapping("/books")
-    public ResponseEntity<Book> createBook(@RequestBody Book book) {
-        try {
-            Book _book = bookRepository
-                    .save(new Book(book.getISBN(), book.getTitle(), book.getDescription(),
-                            book.getAnnotation(), book.getYear(), book.getImageUrl(), book.getBookUrl()));
-            return new ResponseEntity<>(_book, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
-        }
-    }
-
-     */
-
     @PostMapping("/books")
     public Book createBook(@Valid @RequestBody Book book) {
         return bookRepository.save(book);
