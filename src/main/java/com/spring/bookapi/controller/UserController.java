@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -22,14 +22,18 @@ public class UserController {
     UserRepository userRepository;
 
     @GetMapping("/users")
-    public ResponseEntity<List<User>> getAllUsers(@RequestParam(required = false) String username) {
+    public ResponseEntity<List<User>> getAllUsers(@RequestParam(required = false) String username,
+                                                  @RequestParam(required = false) Long id) {
         try {
             List<User> users = new ArrayList<User>();
 
             if (username == null)
                 userRepository.findAll().forEach(users::add);
-            //else
-            //    userRepository.findByUsername(username).forEach(users::add);
+            else
+                userRepository.findByUsername(username);
+//            if ((username == null) && (id != null)) {
+//                userRepository.findByRoleId(users::add);
+//            }
 
             if (users.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);

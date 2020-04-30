@@ -29,7 +29,7 @@ public class User {
     @JoinTable(	name = "tbl_user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    private Set<Role> role = new HashSet<>();
 
     public User() {}
 
@@ -84,11 +84,11 @@ public class User {
     }
 
     public Set<Role> getRoles() {
-        return roles;
+        return role;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setRoles(Set<Role> role) {
+        this.role = role;
     }
 
     public void setUsername(String username) {
@@ -104,7 +104,7 @@ public class User {
                 ", password='" + password + '\'' +
                 ", passwordConfirm='" + passwordConfirm + '\'' +
                 ", fullName='" + fullName + '\'' +
-                ", roles=" + roles +
+                ", roles=" + role +
                 '}';
     }
 }
