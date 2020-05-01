@@ -1,5 +1,7 @@
 package com.spring.bookapi.entity;
 
+import org.springframework.data.annotation.CreatedDate;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
@@ -16,11 +18,12 @@ public class Book {
 
     private String title;
 
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(	name = "tbl_book_authors",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns =
-                    @JoinColumn(name = "user_id"))
+            @JoinColumn(name = "author_id"))
     private Set<User> authors = new HashSet<>();
 
     @Column(columnDefinition = "text")
@@ -37,6 +40,7 @@ public class Book {
     @Column(name = "book_url")
     private String bookUrl;
 
+    @CreatedDate
     @Column(name="date_created")
     private Date createdOn;
 
@@ -159,20 +163,20 @@ public class Book {
     }
 
     public  Book() {
-
     }
 
-    public Book(String ISBN, String title, String description, String annotation,
-                int year, String imageUrl, String bookUrl) {
+    public Book(String ISBN, String title, Set<User> authors, String description, String annotation,
+                int year, String imageUrl, String bookUrl, Set<BookCategory> categories,
+                Department department) {
         this.ISBN = ISBN;
         this.title = title;
-        //this.authors = authors;
+        this.authors = authors;
         this.description = description;
         this.annotation = annotation;
         this.year = year;
         this.imageUrl = imageUrl;
         this.bookUrl = bookUrl;
-        //this.category = category;
-        //this.department = department;
+        this.category = category;
+        this.department = department;
     }
 }

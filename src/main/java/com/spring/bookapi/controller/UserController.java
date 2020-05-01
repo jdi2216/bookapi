@@ -3,7 +3,10 @@ package com.spring.bookapi.controller;
 import com.spring.bookapi.entity.Book;
 import com.spring.bookapi.entity.User;
 import com.spring.bookapi.repository.BookRepository;
+import com.spring.bookapi.repository.RoleRepository;
 import com.spring.bookapi.repository.UserRepository;
+import com.spring.bookapi.security.services.UserDetailsImpl;
+import com.spring.bookapi.security.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -21,9 +25,15 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    RoleRepository roleRepository;
+
+    @Autowired
+    UserDetailsServiceImpl userDetailsServiceImpl;
+
     @GetMapping("/users")
-    public ResponseEntity<List<User>> getAllUsers(@RequestParam(required = false) String username,
-                                                  @RequestParam(required = false) Long id) {
+    public ResponseEntity<List<User>> getAllUsers(@RequestParam(required = false) String username)
+    {
         try {
             List<User> users = new ArrayList<User>();
 
@@ -31,9 +41,6 @@ public class UserController {
                 userRepository.findAll().forEach(users::add);
             else
                 userRepository.findByUsername(username);
-//            if ((username == null) && (id != null)) {
-//                userRepository.findByRoleId(users::add);
-//            }
 
             if (users.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);

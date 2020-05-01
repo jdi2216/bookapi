@@ -26,6 +26,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         // jsr250Enabled = true,
         prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
@@ -58,19 +59,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/api/auth/signup").not().fullyAuthenticated()
+                .authorizeRequests().antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/api/books/**").permitAll()
-                .antMatchers("/api/categories/**").permitAll()
-                .anyRequest().not().fullyAuthenticated()
-        .and()
-        .formLogin()
-        .loginPage("/api/auth/signin")
-        .defaultSuccessUrl("/")
-        .permitAll()
-        .and()
-        .logout()
-        .permitAll()
-        .logoutSuccessUrl("/");
+                .antMatchers("/api/users/**").permitAll()
+                .antMatchers("/api/roles/**").permitAll()
+                .antMatchers("/api/authors/**").permitAll()
+                .anyRequest().authenticated();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
