@@ -166,7 +166,7 @@ public class Book {
     }
 
     public Book(String ISBN, String title, Set<User> authors, String description, String annotation,
-                int year, String imageUrl, String bookUrl, Set<BookCategory> categories,
+                int year, String imageUrl, String bookUrl, Set<BookCategory> category,
                 Department department) {
         this.ISBN = ISBN;
         this.title = title;

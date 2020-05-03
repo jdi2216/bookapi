@@ -16,23 +16,34 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Size(min = 3, max = 60)
     private String username;
+
+    @Size(min = 3, max = 100)
+    private String firstName;
+
+    @Size(min = 3, max = 100)
+    private String lastName;
+
     @Email
     private String email;
+
     @Size(min=2, message = "Не меньше 5 знаков")
     private String password;
+
     @Transient
     private String passwordConfirm;
-    private String fullName;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
     public User() {}
 
-    public User(String username, String email, String password) {
+    public User(String username, String firstName, String lastName, String email, String password) {
         this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.password = password;
     }
@@ -61,6 +72,22 @@ public class User {
         return getEmail();
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
@@ -71,14 +98,6 @@ public class User {
 
     public void setPasswordConfirm(String passwordConfirm) {
         this.passwordConfirm = passwordConfirm;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
     }
 
     public Set<Role> getRoles() {
@@ -98,10 +117,11 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", passwordConfirm='" + passwordConfirm + '\'' +
-                ", fullName='" + fullName + '\'' +
                 ", roles=" + roles +
                 '}';
     }
