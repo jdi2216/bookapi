@@ -23,8 +23,8 @@ public class Book {
     @JoinTable(	name = "tbl_book_authors",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns =
-            @JoinColumn(name = "author_id"))
-    private Set<User> authors = new HashSet<>();
+            @JoinColumn(name = "user_id"))
+    private Set<User> users = new HashSet<>();
 
     @Column(columnDefinition = "text")
     private String description;
@@ -82,12 +82,12 @@ public class Book {
         this.title = title;
     }
 
-    public Set<User> getAuthors() {
-        return authors;
+    public Set<User> getUsers() {
+        return users;
     }
 
-    public void setAuthors(Set<User> authors) {
-        this.authors = authors;
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 
     public String getDescription() {
@@ -165,12 +165,12 @@ public class Book {
     public  Book() {
     }
 
-    public Book(String ISBN, String title, Set<User> authors, String description, String annotation,
+    public Book(String ISBN, String title, Set<User> users, String description, String annotation,
                 int year, String imageUrl, String bookUrl, Set<BookCategory> category,
                 Department department) {
         this.ISBN = ISBN;
         this.title = title;
-        this.authors = authors;
+        this.users = users;
         this.description = description;
         this.annotation = annotation;
         this.year = year;

@@ -66,7 +66,7 @@ public class BookController {
             Book _book = bookData.get();
             _book.setISBN(book.getISBN());
             _book.setTitle(book.getTitle());
-            _book.setAuthors(book.getAuthors());
+            _book.setUsers(book.getUsers());
             _book.setDescription(book.getDescription());
             _book.setAnnotation(book.getAnnotation());
             _book.setYear(book.getYear());
