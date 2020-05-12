@@ -29,14 +29,20 @@ public class User {
     @Email
     private String email;
 
+    private String test;
+
     @Size(min=2, message = "Не меньше 5 знаков")
     private String password;
 
     @Transient
     private String passwordConfirm;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Role> roles;
+    @ManyToOne
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role role;
+
+    @ManyToMany(mappedBy = "authors")
+    Set<Book> books = new HashSet<>();
 
     public User() {}
 
@@ -100,16 +106,32 @@ public class User {
         this.passwordConfirm = passwordConfirm;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public Set<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(Set<Book> books) {
+        this.books = books;
     }
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getTest() {
+        return test;
+    }
+
+    public void setTest(String test) {
+        this.test = test;
     }
 
     @Override
@@ -122,7 +144,7 @@ public class User {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", passwordConfirm='" + passwordConfirm + '\'' +
-                ", roles=" + roles +
+                ", role=" + role +
                 '}';
     }
 }

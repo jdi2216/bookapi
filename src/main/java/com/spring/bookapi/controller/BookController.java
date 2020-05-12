@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/books")
 public class BookController {
 
     @Autowired
@@ -66,7 +66,7 @@ public class BookController {
             Book _book = bookData.get();
             _book.setISBN(book.getISBN());
             _book.setTitle(book.getTitle());
-            _book.setUsers(book.getUsers());
+            _book.setAuthors(book.getAuthors());
             _book.setDescription(book.getDescription());
             _book.setAnnotation(book.getAnnotation());
             _book.setYear(book.getYear());

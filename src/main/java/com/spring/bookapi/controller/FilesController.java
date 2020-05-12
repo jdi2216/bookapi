@@ -1,6 +1,6 @@
 package com.spring.bookapi.controller;
 
-import com.spring.bookapi.entity.FileInfo;
+import com.spring.bookapi.entity.BookInfo;
 import com.spring.bookapi.entity.ResponseMessage;
 import com.spring.bookapi.security.services.FilesStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,16 +37,16 @@ public class FilesController {
     }
 
     @GetMapping("/files")
-    public ResponseEntity<List<FileInfo>> getListFiles() {
-        List<FileInfo> fileInfos = storageService.loadAll().map(path -> {
+    public ResponseEntity<List<BookInfo>> getListFiles() {
+        List<BookInfo> bookInfos = storageService.loadAll().map(path -> {
             String filename = path.getFileName().toString();
             String url = MvcUriComponentsBuilder
                     .fromMethodName(FilesController.class, "getFile", path.getFileName().toString()).build().toString();
 
-            return new FileInfo(filename, url);
+            return new BookInfo(filename, url);
         }).collect(Collectors.toList());
 
-        return ResponseEntity.status(HttpStatus.OK).body(fileInfos);
+        return ResponseEntity.status(HttpStatus.OK).body(bookInfos);
     }
 
     @GetMapping("/files/{filename:.+}")

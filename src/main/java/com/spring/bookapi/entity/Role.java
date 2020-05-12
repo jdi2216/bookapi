@@ -2,6 +2,7 @@ package com.spring.bookapi.entity;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -16,9 +17,13 @@ public class Role {
     @Column(length = 20)
     private ERole name;
 
-    //@Transient
-    @ManyToMany(mappedBy = "roles")
-    private Set<User> users;
+    public Role() {
+    }
+
+    public Role(Long id, ERole name) {
+        this.id = id;
+        this.name = name;
+    }
 
     public Long getId() {
         return id;
@@ -34,14 +39,6 @@ public class Role {
 
     public void setName(ERole name) {
         this.name = name;
-    }
-
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
     }
 
     @Override

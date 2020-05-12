@@ -1,10 +1,10 @@
 package com.spring.bookapi.entity;
 
-public class FileInfo {
+public class BookInfo {
     private String name;
     private String url;
 
-    public FileInfo(String name, String url) {
+    public BookInfo(String name, String url) {
         this.name = name;
         this.url = url;
     }
