@@ -59,14 +59,15 @@ public class BookController {
     }
 
     @PutMapping("/books/{id}")
-    public ResponseEntity<Book> updateBook(@PathVariable("id") long id, @RequestBody Book book) {
+    public ResponseEntity<Book> updateBook(@PathVariable("id") long id,
+                                           @RequestBody Book book) {
         Optional<Book> bookData = bookRepository.findById(id);
 
         if (bookData.isPresent()) {
             Book _book = bookData.get();
             _book.setISBN(book.getISBN());
             _book.setTitle(book.getTitle());
-            _book.setAuthors(book.getAuthors());
+            _book.setUsers(book.getUsers());
             _book.setDescription(book.getDescription());
             _book.setAnnotation(book.getAnnotation());
             _book.setYear(book.getYear());
@@ -74,6 +75,7 @@ public class BookController {
             _book.setBookUrl(book.getBookUrl());
             _book.setDepartment(book.getDepartment());
             _book.setCategory(book.getCategory());
+            _book.setUsers(book.getUsers());
             return new ResponseEntity<>(bookRepository.save(_book), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -8,10 +8,10 @@ import java.util.Set;
 
 @Entity
 @Table(name = "tbl_user",
-    uniqueConstraints = {
-    @UniqueConstraint(columnNames = "email"),
-    @UniqueConstraint(columnNames = "username")
-})
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "email"),
+                @UniqueConstraint(columnNames = "username")
+        })
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,20 +29,19 @@ public class User {
     @Email
     private String email;
 
-    private String test;
-
     @Size(min=2, message = "Не меньше 5 знаков")
     private String password;
 
     @Transient
     private String passwordConfirm;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id", nullable = false)
-    private Role role;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Role> roles;
 
-    @ManyToMany(mappedBy = "authors")
-    Set<Book> books = new HashSet<>();
+
+    public User(Set<Role> roles) {
+        this.roles = roles;
+    }
 
     public User() {}
 
@@ -106,45 +105,15 @@ public class User {
         this.passwordConfirm = passwordConfirm;
     }
 
-    public Role getRole() {
-        return role;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public Set<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(Set<Book> books) {
-        this.books = books;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getTest() {
-        return test;
-    }
-
-    public void setTest(String test) {
-        this.test = test;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", passwordConfirm='" + passwordConfirm + '\'' +
-                ", role=" + role +
-                '}';
     }
 }

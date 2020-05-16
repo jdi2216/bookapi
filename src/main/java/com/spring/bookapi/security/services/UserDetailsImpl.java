@@ -1,14 +1,13 @@
 package com.spring.bookapi.security.services;
 
+import com.spring.bookapi.entity.Role;
 import com.spring.bookapi.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class UserDetailsImpl implements UserDetails {
@@ -29,89 +28,25 @@ public class UserDetailsImpl implements UserDetails {
     @JsonIgnore
     private String password;
 
-    private Collection<? extends GrantedAuthority> authorities;
+    private Set<Role> roles;
+
+    //private Collection<? extends GrantedAuthority> authorities;
 
     public UserDetailsImpl(Long id, String username, String firstName, String lastName, String email,
-                           String password, Collection<? extends GrantedAuthority> authorities) {
+                           String password, Set<Role> roles) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.authorities = authorities;
+        this.roles = roles;
     }
 
     public static UserDetailsImpl build(User user) {
-        Collection<SimpleGrantedAuthority> authorities = new Collection<SimpleGrantedAuthority>() {
-            @Override
-            public int size() {
-                return 0;
-            }
-
-            @Override
-            public boolean isEmpty() {
-                return false;
-            }
-
-            @Override
-            public boolean contains(Object o) {
-                return false;
-            }
-
-            @Override
-            public Iterator<SimpleGrantedAuthority> iterator() {
-                return null;
-            }
-
-            @Override
-            public Object[] toArray() {
-                return new Object[0];
-            }
-
-            @Override
-            public <T> T[] toArray(T[] a) {
-                return null;
-            }
-
-            @Override
-            public boolean add(SimpleGrantedAuthority simpleGrantedAuthority) {
-                return false;
-            }
-
-            @Override
-            public boolean remove(Object o) {
-                return false;
-            }
-
-            @Override
-            public boolean containsAll(Collection<?> c) {
-                return false;
-            }
-
-            @Override
-            public boolean addAll(Collection<? extends SimpleGrantedAuthority> c) {
-                return false;
-            }
-
-            @Override
-            public boolean removeAll(Collection<?> c) {
-                return false;
-            }
-
-            @Override
-            public boolean retainAll(Collection<?> c) {
-                return false;
-            }
-
-            @Override
-            public void clear() {
-
-            }
-        };
-
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(user.getRole().getName().name());
-        authorities.add(authority);
+//        List<GrantedAuthority> authorities = user.getRoles().stream()
+//                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
+//                .collect(Collectors.toList());
 
         return new UserDetailsImpl(
                 user.getId(),
@@ -120,10 +55,15 @@ public class UserDetailsImpl implements UserDetails {
                 user.getLastName(),
                 user.getEmail(),
                 user.getPassword(),
-                authorities);
+                user.getRoles());
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        Object[] rolesArr = roles.toArray();
+        for (Role role : user.getRoles()) {
+            authorities.add(new SimpleGrantedAuthority(role.getName().toString()));
+        }
         return authorities;
     }
 
@@ -163,30 +103,6 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     @Override

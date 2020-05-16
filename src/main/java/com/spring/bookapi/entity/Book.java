@@ -1,8 +1,6 @@
 package com.spring.bookapi.entity;
 
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -11,7 +9,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "tbl_book")
-//uniqueConstraints = @UniqueConstraint(columnNames = "ISBN"))
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,11 +18,13 @@ public class Book {
 
     private String title;
 
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(	name = "tbl_book_authors",
             joinColumns = @JoinColumn(name = "book_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Set<User> authors = new HashSet<>();
+            inverseJoinColumns =
+            @JoinColumn(name = "user_id"))
+    private Set<User> users = new HashSet<>();
 
     @Column(columnDefinition = "text")
     private String description;
@@ -33,14 +32,10 @@ public class Book {
     @Column(columnDefinition = "text")
     private String annotation;
 
-    @DateTimeFormat(pattern = "yyyy")
     private int year;
 
     @Column(name = "image_url")
     private String imageUrl;
-
-    @Transient
-    private BookInfo bookInfo;
 
     @Column(name = "book_url")
     private String bookUrl;
@@ -49,16 +44,15 @@ public class Book {
     @Column(name="date_created")
     private Date createdOn;
 
-    @LastModifiedDate
     @Column(name = "last_updated")
     private Date updatedOn;
 
     @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
+    @JoinColumn(name = "category_id", nullable = true)
     private BookCategory category;
 
     @ManyToOne
-    @JoinColumn(name = "department_id", nullable = false)
+    @JoinColumn(name = "department_id", nullable = true)
     private Department department;
 
     public Long getId() {
@@ -85,12 +79,12 @@ public class Book {
         this.title = title;
     }
 
-    public Set<User> getAuthors() {
-        return authors;
+    public Set<User> getUsers() {
+        return users;
     }
 
-    public void setAuthors(Set<User> authors) {
-        this.authors = authors;
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 
     public String getDescription() {
@@ -168,12 +162,12 @@ public class Book {
     public  Book() {
     }
 
-    public Book(String ISBN, String title, Set<User> authors, String description, String annotation,
+    public Book(String ISBN, String title, Set<User> users, String description, String annotation,
                 int year, String imageUrl, String bookUrl, BookCategory category,
                 Department department) {
         this.ISBN = ISBN;
         this.title = title;
-        this.authors = authors;
+        this.users = users;
         this.description = description;
         this.annotation = annotation;
         this.year = year;
