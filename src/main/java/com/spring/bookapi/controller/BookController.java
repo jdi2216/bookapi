@@ -1,17 +1,18 @@
 package com.spring.bookapi.controller;
 
 import com.spring.bookapi.entity.Book;
+import com.spring.bookapi.entity.Role;
+import com.spring.bookapi.entity.User;
 import com.spring.bookapi.payload.response.MessageResponse;
 import com.spring.bookapi.repository.BookRepository;
+import com.spring.bookapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -20,6 +21,9 @@ public class BookController {
 
     @Autowired
     BookRepository bookRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     @GetMapping("/books")
     public ResponseEntity<List<Book>> getAllBooks(@RequestParam(required = false) String title) {
@@ -67,7 +71,6 @@ public class BookController {
             Book _book = bookData.get();
             _book.setISBN(book.getISBN());
             _book.setTitle(book.getTitle());
-            _book.setUsers(book.getUsers());
             _book.setDescription(book.getDescription());
             _book.setAnnotation(book.getAnnotation());
             _book.setYear(book.getYear());
@@ -81,6 +84,28 @@ public class BookController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @PutMapping("/addAuthor/{id}")
+    public ResponseEntity<?> updateAuthor(@PathVariable("id") Long id,
+                                            @RequestBody String authorIds) {
+        Optional<Book> bookData = bookRepository.findById(id);
+        Set<User> users = new HashSet<>();
+        List<Long> ids = new ArrayList<>();
+        String[] arr= authorIds.split(",");
+        for(String str : arr){
+            ids.add(Long.parseLong(str));
+        }
+        users = userRepository.findAllByIds(ids);
+        if (bookData.isPresent()) {
+            Book _book = bookData.get();
+            _book.setUsers(users);
+            bookRepository.save(_book);
+            return ResponseEntity.ok(new MessageResponse("Author changed successfully!"));
+        } else {
+            return ResponseEntity.ok(new MessageResponse("Author change bad!"));
+        }
+    }
+
 
     @DeleteMapping("/books/{id}")
     public ResponseEntity<HttpStatus> deleteBook(@PathVariable("id") long id) {

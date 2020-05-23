@@ -24,6 +24,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     //List<User> findByRolesId(@Param(value = "id") Long role_id);
 
+    @Query(value = "select u from User u where u.id = ?1")
+    Set<User> findAllByIds(List<Long> id);
+
     Boolean existsByUsername(String username);
     Boolean existsByEmail(String email);
 }

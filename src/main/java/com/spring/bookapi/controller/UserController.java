@@ -74,7 +74,6 @@ public class UserController {
                                             @RequestBody String roleIds) {
 
         Optional<User> userData = userRepository.findById(id);
-        Set<Role> roleData = userData.get().getRoles();
         Set<Role> roles = new HashSet<>();
         List<Long> ids = new ArrayList<>();
         String[] arr= roleIds.split(",");
@@ -106,34 +105,6 @@ public class UserController {
             _user.setPassword(encoder.encode(user.getPassword()));
             return new ResponseEntity<>(userRepository.save(_user), HttpStatus.OK);
         } else  {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @PutMapping("users/{id}/roles")
-    public ResponseEntity<User> updateRoles(@PathVariable("id") Long id,
-                                            @RequestParam String strRoles) {
-        Optional<User> userData = userRepository.findById(id);
-
-        Set<Role> roles = new HashSet<>();
-        List<Long> roleIds = new ArrayList<>();
-        String[] arr = strRoles.split(",");
-        for (String str : arr) {
-            roleIds.add(Long.parseLong(str));
-        }
-        roles = roleRepository.findAllByIds(roleIds);
-
-//        Set<Role> roles = new HashSet<>();
-//        roles.add(role);
-        if (userData.isPresent()) {
-            User _user = new User(userData.get().getUsername(),
-                    userData.get().getFirstName(),
-                    userData.get().getLastName(),
-                    userData.get().getEmail(),
-                    encoder.encode(userData.get().getPassword()));
-            _user.setRoles(roles);
-            return new ResponseEntity<>(userRepository.save(_user), HttpStatus.OK);
-        } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }

@@ -2,9 +2,12 @@ package com.spring.bookapi.controller;
 
 import com.spring.bookapi.entity.Book;
 import com.spring.bookapi.entity.BookCategory;
+import com.spring.bookapi.payload.response.MessageResponse;
 import com.spring.bookapi.repository.BookCategoryRepository;
 import com.spring.bookapi.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +24,9 @@ public class BookCategoryController {
 
     @Autowired
     BookCategoryRepository bookCategoryRepository;
+
+    @Autowired
+    BookRepository bookRepository;
 
     @GetMapping("/categories")
     public ResponseEntity<List<BookCategory>> getAllBookCategories() {
@@ -70,10 +76,15 @@ public class BookCategoryController {
     }
 
     @DeleteMapping("/categories/{id}")
-    public ResponseEntity<HttpStatus> deleteBookCategory(@PathVariable("id") long id) {
+    public ResponseEntity<?> deleteBookCategory(@PathVariable("id") long id) {
         try {
-            bookCategoryRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            Page<Book> bookPage = bookRepository.findByCategoryId(id, Pageable.unpaged());
+            if (!bookPage.isEmpty()) {
+                bookCategoryRepository.deleteById(id);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            } else {
+                return ResponseEntity.ok(new MessageResponse("Данная категория содержит ЭУМК"));
+            }
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
         }
