@@ -160,7 +160,7 @@ public class Book {
 
     public  Book() {
     }
-
+/*
     public Book(String ISBN, String title, Set<User> users, String description, String annotation,
                 int year, String imageUrl, String bookUrl, BookCategory category,
                 Department department) {
@@ -175,4 +175,6 @@ public class Book {
         this.category = category;
         this.department = department;
     }
+
+ */
 }

@@ -16,7 +16,7 @@ import java.util.*;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/api/books")
+@RequestMapping("/api/")
 public class BookController {
 
     @Autowired
