@@ -1,10 +1,10 @@
 package com.spring.bookapi.controller;
 
-import com.spring.bookapi.entity.Book;
-import com.spring.bookapi.entity.Role;
-import com.spring.bookapi.entity.User;
+import com.spring.bookapi.entity.*;
 import com.spring.bookapi.payload.response.MessageResponse;
+import com.spring.bookapi.repository.BookCategoryRepository;
 import com.spring.bookapi.repository.BookRepository;
+import com.spring.bookapi.repository.DepartmentRepository;
 import com.spring.bookapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +24,12 @@ public class BookController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    BookCategoryRepository categoryRepository;
+
+    @Autowired
+    DepartmentRepository departmentRepository;
 
     @GetMapping("/books")
     public ResponseEntity<List<Book>> getAllBooks(@RequestParam(required = false) String title) {
@@ -105,6 +111,42 @@ public class BookController {
             return ResponseEntity.ok(new MessageResponse("Author change bad!"));
         }
     }
+
+    @PutMapping("/addCategory/{id}")
+    public ResponseEntity<?> updateCategory(@PathVariable("id") Long id,
+                                          @RequestBody String categoryIdStr) {
+        Optional<Book> bookData = bookRepository.findById(id);
+        BookCategory category;
+        Long categoryId = Long.parseLong(categoryIdStr);
+        category = categoryRepository.findOneById(categoryId);
+        if (bookData.isPresent()) {
+            Book _book = bookData.get();
+            _book.setCategory(category);
+            bookRepository.save(_book);
+            return ResponseEntity.ok(new MessageResponse("Category changed successfully!"));
+        } else {
+            return ResponseEntity.ok(new MessageResponse("Category change bad!"));
+        }
+    }
+
+    @PutMapping("/addDepartment/{id}")
+    public ResponseEntity<?> updateDeparment(@PathVariable("id") Long id,
+                                             @RequestBody String depIdStr) {
+        Optional<Book> bookData = bookRepository.findById(id);
+        Department dep;
+        Long depId = Long.parseLong(depIdStr);
+        dep = departmentRepository.findOneById(depId);
+        if (bookData.isPresent()) {
+            Book _book = bookData.get();
+            _book.setDepartment(dep);
+            bookRepository.save(_book);
+            return ResponseEntity.ok(new MessageResponse("Department changed successfully!"));
+        } else {
+            return ResponseEntity.ok(new MessageResponse("Department change bad!"));
+        }
+    }
+
+
 
 
     @DeleteMapping("/books/{id}")

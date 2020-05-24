@@ -18,7 +18,6 @@ public class Book {
 
     private String title;
 
-
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(	name = "tbl_book_authors",
             joinColumns = @JoinColumn(name = "book_id"),
@@ -75,7 +74,7 @@ public class Book {
         return title;
     }
 
-    public void setTitle(String name) {
+    public void setTitle(String title) {
         this.title = title;
     }
 

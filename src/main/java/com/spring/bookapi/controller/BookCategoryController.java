@@ -55,7 +55,6 @@ public class BookCategoryController {
         }
     }
 
-
     @PostMapping("/categories")
     public BookCategory createBookCategory(@Valid @RequestBody BookCategory category) {
         return bookCategoryRepository.save(category);
